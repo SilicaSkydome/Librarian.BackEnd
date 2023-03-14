@@ -4,7 +4,7 @@ namespace Librarian.BackEnd.Models
 {
     public class Chapter
     {
-        public int ID { get; set; }
+        public Guid ID { get; set; }
         [Required]
         public Book Book { get; set; }
         public string ChapterName { get; set; }
@@ -12,6 +12,6 @@ namespace Librarian.BackEnd.Models
         public string Text { get; set; }
         [Required]
         public int Symbols { get; set; }
-        public ICollection<ChapterReview> ChapterReviews { get; set; }
+        public ICollection<ChapterReview> ChapterReviews { get; set; } = null!;
     }
 }

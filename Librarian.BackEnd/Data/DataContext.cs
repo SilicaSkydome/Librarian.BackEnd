@@ -10,11 +10,11 @@ namespace Librarian.BackEnd.Data
 
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Book> Books { get; set; }
-        public DbSet<Review> Reviews { get; set; }
-        public DbSet<Chapter> Chapters { get; set; }
-        public DbSet<ChapterReview> chapterReviews { get; set; }
-        
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Book> Books { get; set; } = null!;
+        public DbSet<Review> Reviews { get; set; } = null!;
+        public DbSet<Chapter> Chapters { get; set; } = null!;
+        public DbSet<ChapterReview> chapterReviews { get; set; } = null!;
+
     }
 }

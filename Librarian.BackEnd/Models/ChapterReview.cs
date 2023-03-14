@@ -2,7 +2,7 @@
 {
     public class ChapterReview
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public User Author { get; set; }
         public Chapter Chapter { get; set; }
         public string Text { get; set; }

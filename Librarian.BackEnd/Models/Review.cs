@@ -2,7 +2,7 @@
 {
     public class Review
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public User Author { get; set; }
         public Book Book { get; set; }
         public string Text { get; set; }

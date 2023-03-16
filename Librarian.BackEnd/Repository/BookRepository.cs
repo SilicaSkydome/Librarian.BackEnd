@@ -50,5 +50,18 @@ namespace Librarian.BackEnd.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateBook(Book book)
+        {
+            _context.Update(book);
+            return Save();
+        }
+
+        public bool DeleteBook(Book book)
+        {
+            _context.Remove(book);
+
+            return Save();
+        }
     }
 }

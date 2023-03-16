@@ -8,10 +8,15 @@ namespace Librarian.BackEnd.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<Book, BookDto>();
-            CreateMap<BookDto, Book>();
-            CreateMap<Chapter, ChapterDto>();
-            CreateMap<ChapterDto, Chapter>();
+            CreateMap<Book, BookGetDto>();
+            CreateMap<BookGetDto, Book>();
+            CreateMap<BookPostDto, Book>();
+            CreateMap<Chapter, ChapterGetDto>();
+            CreateMap<ChapterGetDto, Chapter>();
+            CreateMap<ChapterPostDto, Chapter>();
+            CreateMap<User, UserGetDto>();
+            CreateMap<UserPostDto, User>();
+            CreateMap<UserPostDto, User>();
         }
     }
 }

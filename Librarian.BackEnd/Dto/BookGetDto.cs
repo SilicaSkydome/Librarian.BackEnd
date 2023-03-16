@@ -2,7 +2,7 @@
 
 namespace Librarian.BackEnd.Dto
 {
-    public class BookDto
+    public class BookGetDto
     {
         public Guid ID { get; set; }
         public string Name { get; set; }

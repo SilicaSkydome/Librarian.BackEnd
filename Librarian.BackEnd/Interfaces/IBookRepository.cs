@@ -10,6 +10,8 @@ namespace Librarian.BackEnd.Interfaces
         ICollection<Book> GetBooksByName(string name);
         ICollection<Book> GetBooksByAuthor(string author);
         bool CreateBook(Book book);
+        bool UpdateBook(Book book);
+        bool DeleteBook(Book book);
         bool Save();
 
     }

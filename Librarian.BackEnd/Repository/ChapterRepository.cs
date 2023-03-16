@@ -30,7 +30,7 @@ namespace Librarian.BackEnd.Repository
 
         public bool CreateChapter(Chapter chapter)
         {
-            _context.Chapters.Add(chapter);
+            _context.Add(chapter);
 
             return Save();
         }
@@ -39,6 +39,20 @@ namespace Librarian.BackEnd.Repository
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool UpdateChapter(Chapter chapter)
+        {
+            _context.Update(chapter);
+
+            return Save();
+        }
+
+        public bool DeleteChapter(Chapter chapter)
+        {
+            _context.Remove(chapter);
+
+            return Save();
         }
     }
 }

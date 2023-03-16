@@ -1,7 +1,10 @@
-﻿namespace Librarian.BackEnd.Dto
+﻿using Librarian.BackEnd.Models;
+
+namespace Librarian.BackEnd.Dto
 {
-    public class ChapterDto
+    public class ChapterGetDto
     {
+        public Guid ID { get; set; }
         public Guid BookID { get; set; }
         public string ChapterName { get; set; }
         public string Text { get; set; }

@@ -1,6 +1,6 @@
-using Librarian.BackEnd.Data;
-using Librarian.BackEnd.Interfaces;
-using Librarian.BackEnd.Repository;
+using Librarian.BackEnd.Common.Interfaces;
+using Librarian.BackEnd.Common.Repository;
+using Librarian.BackEnd.Entity.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

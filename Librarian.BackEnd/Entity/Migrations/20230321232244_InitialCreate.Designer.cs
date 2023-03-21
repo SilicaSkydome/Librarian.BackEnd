@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Librarian.BackEnd.Migrations
+namespace Librarian.BackEnd.Entity.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230320205958_InitialCreate")]
+    [Migration("20230321232244_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,10 +25,29 @@ namespace Librarian.BackEnd.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Author", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Author");
+                });
+
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Book", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AuthorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
@@ -45,6 +64,8 @@ namespace Librarian.BackEnd.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Books");
                 });
@@ -185,6 +206,28 @@ namespace Librarian.BackEnd.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Author", b =>
+                {
+                    b.HasOne("Librarian.BackEnd.Entity.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Book", b =>
+                {
+                    b.HasOne("Librarian.BackEnd.Entity.Models.Author", "Author")
+                        .WithMany("Writing")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUser", b =>
                 {
                     b.HasOne("Librarian.BackEnd.Entity.Models.Book", "Book")
@@ -196,7 +239,7 @@ namespace Librarian.BackEnd.Migrations
                     b.HasOne("Librarian.BackEnd.Entity.Models.User", "Reader")
                         .WithMany("Books")
                         .HasForeignKey("ReaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Book");
@@ -220,7 +263,7 @@ namespace Librarian.BackEnd.Migrations
                     b.HasOne("Librarian.BackEnd.Entity.Models.User", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Librarian.BackEnd.Entity.Models.Chapter", "Chapter")
@@ -239,7 +282,7 @@ namespace Librarian.BackEnd.Migrations
                     b.HasOne("Librarian.BackEnd.Entity.Models.User", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Librarian.BackEnd.Entity.Models.Book", "Book")
@@ -251,6 +294,11 @@ namespace Librarian.BackEnd.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Author", b =>
+                {
+                    b.Navigation("Writing");
                 });
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Book", b =>

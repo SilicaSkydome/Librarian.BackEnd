@@ -20,8 +20,7 @@ namespace Librarian.BackEnd.Common.Repository
 
         public ICollection<Book> GetBooksByAuthor(string author)
         {
-            //return _context.Books.Where(b => b.Author.Id == _context.Users.Where(u => u.Name.Contains(author)).FirstOrDefault().Id).ToList();
-            throw new NotImplementedException();
+            return _context.Books.Where(b => b.Author.Id == _context.Users.Where(u => u.Name.Contains(author)).FirstOrDefault().Id).ToList();
         }
 
         public Book GetBookById(Guid id)

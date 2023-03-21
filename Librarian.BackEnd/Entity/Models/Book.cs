@@ -8,8 +8,8 @@ namespace Librarian.BackEnd.Entity.Models
         public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
-        //public User Author { get; set; }
-        //public Guid AuthorId { get; set; }
+        public Author Author { get; set; }
+        public Guid AuthorId { get; set; }
         [Required]
         public DateTime Date { get; set; }
         [Required]

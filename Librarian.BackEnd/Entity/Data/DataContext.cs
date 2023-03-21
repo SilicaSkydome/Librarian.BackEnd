@@ -20,8 +20,34 @@ namespace Librarian.BackEnd.Entity.Data
         {
             modelBuilder.Entity<BookUser>(bu =>
             {
-                bu.HasOne(b => b.Reader).WithMany(b => b.Books);
-                bu.HasOne(b => b.Book).WithMany(b => b.Readers);
+                bu.HasOne(b => b.Reader).WithMany(b => b.Books)
+                .HasForeignKey(b => b.ReaderId).OnDelete(DeleteBehavior.Restrict);
+                bu.HasOne(b => b.Book).WithMany(b => b.Readers)
+                .HasForeignKey(b => b.BookId).OnDelete(DeleteBehavior.Cascade);
+            });
+            modelBuilder.Entity<Review>(r =>
+            {
+                r.HasOne(r => r.Book)
+                .WithMany(b => b.Reviews)
+                .HasForeignKey(r => r.BookId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                r.HasOne(r => r.Author)
+                .WithMany()
+                .HasForeignKey(r => r.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<ChapterReview>(cr =>
+            {
+                cr.HasOne(r => r.Chapter)
+                .WithMany(b => b.Reviews)
+                .HasForeignKey(r => r.ChapterId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                cr.HasOne(r => r.Author)
+                .WithMany()
+                .HasForeignKey(r => r.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
             });
         }
 

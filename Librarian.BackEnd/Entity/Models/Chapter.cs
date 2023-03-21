@@ -6,8 +6,8 @@ namespace Librarian.BackEnd.Entity.Models
     {
         public Guid Id { get; set; }
         [Required]
-        public Book Book { get; set; }
         public Guid BookId { get; set; }
+        public Book Book { get; set; }
         public string Name { get; set; }
         [Required]
         public string Text { get; set; }

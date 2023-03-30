@@ -16,7 +16,6 @@ namespace Librarian.BackEnd.Common.Repository
         public bool AddUser(User user)
         {
             _context.Add(user);
-
             return Save();
         }
 

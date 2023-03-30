@@ -31,7 +31,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(books);
         }
 
-        [HttpGet("id={id:guid}")]
+        [HttpGet("id/{id:guid}")]
         [ProducesResponseType(200, Type = typeof(BookGetDto))]
         [ProducesResponseType(400)]
         public IActionResult GetBookById(Guid id)
@@ -47,7 +47,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(book);
         }
 
-        [HttpGet("name={name}")]
+        [HttpGet("name/{name}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<BookGetDto>))]
         [ProducesResponseType(400)]
         public IActionResult GetBooksByName(string name)
@@ -60,7 +60,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(books);
         }
 
-        [HttpGet("author={author}")]
+        [HttpGet("author/{author}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<BookGetDto>))]
         [ProducesResponseType(400)]
         public IActionResult GetBookByAuthor(string author)
@@ -104,7 +104,7 @@ namespace Librarian.BackEnd.Common.Controllers
 
             return Ok("Successfully created");
         }
-        [HttpPut("id={id}")]
+        [HttpPut("id/{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -130,7 +130,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok("Updated successfully");
         }
 
-        [HttpDelete("id={id}")]
+        [HttpDelete("id/{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

@@ -31,7 +31,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(users);
         }
 
-        [HttpGet("id={id}")]
+        [HttpGet("id/{id}")]
         [ProducesResponseType(200, Type = typeof(User))]
         public IActionResult GetUserById(Guid id)
         {
@@ -46,7 +46,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(user);
         }
 
-        [HttpGet("name={name}")]
+        [HttpGet("name/{name}")]
         [ProducesResponseType(200, Type = typeof(UserGetDto))]
         public IActionResult GetUsersByName(string name)
         {
@@ -90,7 +90,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok("Successfully created");
         }
 
-        [HttpPut("id={id}")]
+        [HttpPut("id/{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -116,7 +116,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok("Updated successfully");
         }
 
-        [HttpDelete("id={id}")]
+        [HttpDelete("id/{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

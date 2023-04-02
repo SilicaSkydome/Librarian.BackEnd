@@ -28,14 +28,9 @@ namespace Librarian.BackEnd.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Author");
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Book", b =>
@@ -177,6 +172,9 @@ namespace Librarian.BackEnd.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
@@ -200,18 +198,11 @@ namespace Librarian.BackEnd.Entity.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId")
+                        .IsUnique()
+                        .HasFilter("[AuthorId] IS NOT NULL");
+
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Author", b =>
-                {
-                    b.HasOne("Librarian.BackEnd.Entity.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Book", b =>
@@ -293,8 +284,20 @@ namespace Librarian.BackEnd.Entity.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.User", b =>
+                {
+                    b.HasOne("Librarian.BackEnd.Entity.Models.Author", "Author")
+                        .WithOne("User")
+                        .HasForeignKey("Librarian.BackEnd.Entity.Models.User", "AuthorId");
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Author", b =>
                 {
+                    b.Navigation("User")
+                        .IsRequired();
+
                     b.Navigation("Writing");
                 });
 

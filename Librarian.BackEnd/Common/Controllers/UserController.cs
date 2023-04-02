@@ -31,14 +31,29 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(users);
         }
 
-        [HttpGet("id/{id}")]
+        [HttpGet("userId/{id}")]
         [ProducesResponseType(200, Type = typeof(User))]
-        public IActionResult GetUserById(Guid id)
+        public IActionResult GetUserByUserId(Guid id)
         {
             if (!_userRepository.UserExists(id))
                 return NotFound();
 
-            var user = _mapper.Map<UserGetDto>(_userRepository.GetUserById(id));
+            var user = _mapper.Map<UserGetDto>(_userRepository.GetUserByUserId(id));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(user);
+        }
+
+        [HttpGet("authorId/{id}")]
+        [ProducesResponseType(200, Type = typeof(User))]
+        public IActionResult GetUserByAuthorId(Guid id)
+        {
+            if (!_userRepository.UserExists(id))
+                return NotFound();
+
+            var user = _mapper.Map<UserGetDto>(_userRepository.GetUserByAuthorId(id));
 
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -125,7 +140,7 @@ namespace Librarian.BackEnd.Common.Controllers
             if (!_userRepository.UserExists(id))
                 return NotFound();
 
-            var userToDelete = _userRepository.GetUserById(id);
+            var userToDelete = _userRepository.GetUserByUserId(id);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

@@ -11,6 +11,7 @@ namespace Librarian.BackEnd.Entity.Data
         }
 
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Author> Authors { get; set; } = null!;
         public DbSet<Book> Books { get; set; } = null!;
         public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<Chapter> Chapters { get; set; } = null!;

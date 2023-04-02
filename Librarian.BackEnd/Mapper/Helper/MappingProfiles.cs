@@ -17,6 +17,8 @@ namespace Librarian.BackEnd.Mapper.Helper
             CreateMap<User, UserGetDto>();
             CreateMap<UserPostDto, User>();
             CreateMap<UserPostDto, User>();
+            CreateMap<AuthorPostDto, Author>();
+            CreateMap<Author, AuthorPostDto>();
         }
     }
 }

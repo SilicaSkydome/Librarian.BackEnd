@@ -26,9 +26,13 @@ namespace Librarian.BackEnd.Common.Repository
             return Save();
         }
 
-        public User GetUserById(Guid id)
+        public User GetUserByUserId(Guid id)
         {
             return _context.Users.Where(u => u.Id == id).FirstOrDefault();
+        }
+        public User GetUserByAuthorId(Guid id)
+        {
+            return _context.Users.Where(u => u.AuthorId == id).FirstOrDefault();
         }
 
         public ICollection<User> GetUsers()

@@ -4,7 +4,8 @@ namespace Librarian.BackEnd.Common.Interfaces
 {
     public interface IUserRepository
     {
-        User GetUserById(Guid id);
+        User GetUserByUserId(Guid id);
+        User GetUserByAuthorId(Guid id);
         bool UserExists(Guid id);
         bool AddUser(User user);
         bool UpdateUser(User user);

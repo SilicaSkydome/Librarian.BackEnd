@@ -8,6 +8,7 @@ namespace Librarian.BackEnd.Entity.Models
         public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public string? CoverUrl { get; set; }
         public Author Author { get; set; }
         public Guid AuthorId { get; set; }
         [Required]

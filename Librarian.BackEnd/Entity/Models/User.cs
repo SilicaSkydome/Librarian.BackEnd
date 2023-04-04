@@ -6,6 +6,7 @@
         public string Login { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
+        public string? AvatarUrl { get; set; }
         public Guid? AuthorId { get; set; }
         public Author? Author { get; set; }
         public string? Description { get; set; }

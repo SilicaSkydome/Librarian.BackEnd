@@ -10,7 +10,6 @@ namespace Librarian.BackEnd.Common.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private IConfiguration _config;
         private ILoginRepository _loginRepository;
 
         public LoginController(ILoginRepository loginRepository)

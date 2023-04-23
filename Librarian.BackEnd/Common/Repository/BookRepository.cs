@@ -33,8 +33,25 @@ namespace Librarian.BackEnd.Common.Repository
             return _context.Books.Where(b => b.Name.Contains(name)).ToList();
         }
 
-        public ICollection<Book> GetBooks()
+        public ICollection<Book> GetBooks(string? order)
         {
+            if (order == "popular")
+            {
+                return _context.Books.OrderBy(b => b.Name).ToList();
+            }
+            if (order == "new")
+            {
+                return _context.Books.OrderByDescending(b => b.Date).Take(10).ToList();
+            }
+            if (order == "updates")
+            {
+                return _context.Books.OrderBy(b => b.Name).ToList();
+            }
+            if (order == "bestsellers")
+            {
+                return _context.Books.OrderBy(b => b.Name).ToList();
+            }
+
             return _context.Books.OrderBy(b => b.Name).ToList();
         }
 

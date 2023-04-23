@@ -21,9 +21,9 @@ namespace Librarian.BackEnd.Common.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<BookGetDto>))]
-        public IActionResult GetBooks()
+        public IActionResult GetBooks(string? order)
         {
-            var books = _mapper.Map<List<BookGetDto>>(_bookRepository.GetBooks());
+            var books = _mapper.Map<List<BookGetDto>>(_bookRepository.GetBooks(order));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -81,7 +81,7 @@ namespace Librarian.BackEnd.Common.Controllers
             if (bookCreate == null)
                 return BadRequest(ModelState);
 
-            var book = _bookRepository.GetBooks()
+            var book = _bookRepository.GetBooks(null)
                 .Where(b => b.Name.Trim().ToUpper() == bookCreate.Name.Trim().ToUpper())
                 .FirstOrDefault();
 

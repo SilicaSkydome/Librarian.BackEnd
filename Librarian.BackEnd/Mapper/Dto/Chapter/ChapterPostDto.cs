@@ -1,8 +1,7 @@
-﻿namespace Librarian.BackEnd.Mapper.Dto
+﻿namespace Librarian.BackEnd.Mapper.Dto.Chapter
 {
-    public class ChapterGetDto
+    public class ChapterPostDto
     {
-        public Guid ID { get; set; }
         public Guid BookID { get; set; }
         public string ChapterName { get; set; }
         public string Text { get; set; }

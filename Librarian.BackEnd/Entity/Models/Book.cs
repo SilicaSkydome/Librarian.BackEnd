@@ -9,14 +9,15 @@ namespace Librarian.BackEnd.Entity.Models
         [Required]
         public string Name { get; set; }
         public string? CoverUrl { get; set; }
-        public Author Author { get; set; }
+        public BookUserWriting Author { get; set; }
+        [ForeignKey(nameof(Author))]
         public Guid AuthorId { get; set; }
         [Required]
         public DateTime Date { get; set; }
         [Required]
         public int Symbols { get; set; }
         public string? Description { get; set; }
-        public ICollection<BookUser> Readers { get; set; } = null!;
+        public ICollection<BookUserReading> Readers { get; set; } = null!;
         [NotMapped]
         public ICollection<string> Tags { get; set; } = null!;
         public ICollection<Chapter> Chapters { get; set; } = null!;

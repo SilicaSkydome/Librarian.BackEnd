@@ -1,4 +1,4 @@
-﻿namespace Librarian.BackEnd.Mapper.Dto
+﻿namespace Librarian.BackEnd.Mapper.Dto.User
 {
     public class UserLoginDto
     {

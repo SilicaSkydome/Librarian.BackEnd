@@ -11,7 +11,6 @@ namespace Librarian.BackEnd.Entity.Data
         }
 
         public DbSet<User> Users { get; set; } = null!;
-        public DbSet<Author> Authors { get; set; } = null!;
         public DbSet<Book> Books { get; set; } = null!;
         public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<Chapter> Chapters { get; set; } = null!;
@@ -19,12 +18,28 @@ namespace Librarian.BackEnd.Entity.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BookUser>(bu =>
+            modelBuilder.Entity<Book>(b =>
             {
-                bu.HasOne(b => b.Reader).WithMany(b => b.Books)
+                b.HasOne(b => b.Author)
+                .WithOne(b => b.Book)
+                .HasForeignKey<BookUserWriting>(b => b.BookId);
+            });
+            modelBuilder.Entity<BookUserReading>(bu =>
+            {
+                bu.HasOne(b => b.Reader).WithMany(b => b.Reading)
                 .HasForeignKey(b => b.ReaderId).OnDelete(DeleteBehavior.Restrict);
                 bu.HasOne(b => b.Book).WithMany(b => b.Readers)
                 .HasForeignKey(b => b.BookId).OnDelete(DeleteBehavior.Cascade);
+            });
+            modelBuilder.Entity<BookUserWriting>(b =>
+            {
+                b.HasOne(b => b.Author)
+                .WithMany(b => b.Writing)
+                .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
+
+                b.HasOne(b => b.Book)
+                 .WithOne(b => b.Author)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<Review>(r =>
             {

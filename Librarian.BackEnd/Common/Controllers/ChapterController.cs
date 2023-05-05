@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Librarian.BackEnd.Common.Interfaces;
 using Librarian.BackEnd.Entity.Models;
-using Librarian.BackEnd.Mapper.Dto;
+using Librarian.BackEnd.Mapper.Dto.Chapter;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Librarian.BackEnd.Common.Controllers

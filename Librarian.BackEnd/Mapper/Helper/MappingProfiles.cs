@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Librarian.BackEnd.Entity.Models;
-using Librarian.BackEnd.Mapper.Dto;
+using Librarian.BackEnd.Mapper.Dto.Book;
+using Librarian.BackEnd.Mapper.Dto.Chapter;
+using Librarian.BackEnd.Mapper.Dto.User;
 
 namespace Librarian.BackEnd.Mapper.Helper
 {
@@ -17,8 +19,6 @@ namespace Librarian.BackEnd.Mapper.Helper
             CreateMap<User, UserGetDto>();
             CreateMap<UserPostDto, User>();
             CreateMap<UserPostDto, User>();
-            CreateMap<AuthorPostDto, Author>();
-            CreateMap<Author, AuthorPostDto>();
         }
     }
 }

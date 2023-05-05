@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Librarian.BackEnd.Entity.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230404194854_AddedAvatars")]
-    partial class AddedAvatars
+    [Migration("20230505225601_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,17 +24,6 @@ namespace Librarian.BackEnd.Entity.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Author", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Authors");
-                });
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Book", b =>
                 {
@@ -63,12 +52,10 @@ namespace Librarian.BackEnd.Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUser", b =>
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUserReading", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,7 +73,29 @@ namespace Librarian.BackEnd.Entity.Migrations
 
                     b.HasIndex("ReaderId");
 
-                    b.ToTable("BookUser");
+                    b.ToTable("BookUserReading");
+                });
+
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUserWriting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("BookId")
+                        .IsUnique();
+
+                    b.ToTable("BookUserWriting");
                 });
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Chapter", b =>
@@ -178,9 +187,6 @@ namespace Librarian.BackEnd.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AuthorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -191,6 +197,10 @@ namespace Librarian.BackEnd.Entity.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Login")
@@ -205,27 +215,16 @@ namespace Librarian.BackEnd.Entity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AuthorId")
-                        .IsUnique()
-                        .HasFilter("[AuthorId] IS NOT NULL");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Book", b =>
-                {
-                    b.HasOne("Librarian.BackEnd.Entity.Models.Author", "Author")
-                        .WithMany("Writing")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUser", b =>
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUserReading", b =>
                 {
                     b.HasOne("Librarian.BackEnd.Entity.Models.Book", "Book")
                         .WithMany("Readers")
@@ -234,7 +233,7 @@ namespace Librarian.BackEnd.Entity.Migrations
                         .IsRequired();
 
                     b.HasOne("Librarian.BackEnd.Entity.Models.User", "Reader")
-                        .WithMany("Books")
+                        .WithMany("Reading")
                         .HasForeignKey("ReaderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -242,6 +241,25 @@ namespace Librarian.BackEnd.Entity.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Reader");
+                });
+
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUserWriting", b =>
+                {
+                    b.HasOne("Librarian.BackEnd.Entity.Models.User", "Author")
+                        .WithMany("Writing")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Librarian.BackEnd.Entity.Models.Book", "Book")
+                        .WithOne("Author")
+                        .HasForeignKey("Librarian.BackEnd.Entity.Models.BookUserWriting", "BookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Chapter", b =>
@@ -293,25 +311,11 @@ namespace Librarian.BackEnd.Entity.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.User", b =>
-                {
-                    b.HasOne("Librarian.BackEnd.Entity.Models.Author", "Author")
-                        .WithOne("User")
-                        .HasForeignKey("Librarian.BackEnd.Entity.Models.User", "AuthorId");
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Author", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
-
-                    b.Navigation("Writing");
-                });
-
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Book", b =>
                 {
+                    b.Navigation("Author")
+                        .IsRequired();
+
                     b.Navigation("Chapters");
 
                     b.Navigation("Readers");
@@ -326,7 +330,9 @@ namespace Librarian.BackEnd.Entity.Migrations
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.User", b =>
                 {
-                    b.Navigation("Books");
+                    b.Navigation("Reading");
+
+                    b.Navigation("Writing");
                 });
 #pragma warning restore 612, 618
         }

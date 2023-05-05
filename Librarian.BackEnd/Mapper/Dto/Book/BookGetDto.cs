@@ -1,7 +1,8 @@
-﻿namespace Librarian.BackEnd.Mapper.Dto
+﻿namespace Librarian.BackEnd.Mapper.Dto.Book
 {
-    public class BookPostDto
+    public class BookGetDto
     {
+        public Guid ID { get; set; }
         public string Name { get; set; }
         public string? CoverUrl { get; set; }
         public Guid AuthorID { get; set; }

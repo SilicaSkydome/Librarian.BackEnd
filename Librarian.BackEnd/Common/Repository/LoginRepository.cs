@@ -1,7 +1,7 @@
 ﻿using Librarian.BackEnd.Common.Interfaces;
 using Librarian.BackEnd.Entity.Data;
 using Librarian.BackEnd.Entity.Models;
-using Librarian.BackEnd.Mapper.Dto;
+using Librarian.BackEnd.Mapper.Dto.User;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

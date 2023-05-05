@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Librarian.BackEnd.Common.Interfaces;
 using Librarian.BackEnd.Entity.Models;
-using Librarian.BackEnd.Mapper.Dto;
+using Librarian.BackEnd.Mapper.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,21 +40,6 @@ namespace Librarian.BackEnd.Common.Controllers
                 return NotFound();
 
             var user = _mapper.Map<UserGetDto>(_userRepository.GetUserByUserId(id));
-
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            return Ok(user);
-        }
-
-        [HttpGet("authorId/{id}")]
-        [ProducesResponseType(200, Type = typeof(User))]
-        public IActionResult GetUserByAuthorId(Guid id)
-        {
-            if (!_userRepository.UserExists(id))
-                return NotFound();
-
-            var user = _mapper.Map<UserGetDto>(_userRepository.GetUserByAuthorId(id));
 
             if (!ModelState.IsValid)
                 return BadRequest();

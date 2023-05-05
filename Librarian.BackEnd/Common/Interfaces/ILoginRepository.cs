@@ -1,5 +1,5 @@
 ﻿using Librarian.BackEnd.Entity.Models;
-using Librarian.BackEnd.Mapper.Dto;
+using Librarian.BackEnd.Mapper.Dto.User;
 
 namespace Librarian.BackEnd.Common.Interfaces
 {

@@ -12,22 +12,12 @@ namespace Librarian.BackEnd.Entity.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Authors",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Authors", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CoverUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Symbols = table.Column<int>(type: "int", nullable: false),
@@ -36,12 +26,6 @@ namespace Librarian.BackEnd.Entity.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Books", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Books_Authors_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "Authors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,7 +36,9 @@ namespace Librarian.BackEnd.Entity.Migrations
                     Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -60,11 +46,6 @@ namespace Librarian.BackEnd.Entity.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Authors_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "Authors",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -89,28 +70,53 @@ namespace Librarian.BackEnd.Entity.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookUser",
+                name: "BookUserReading",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookUser", x => x.Id);
+                    table.PrimaryKey("PK_BookUserReading", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookUser_Books_BookId",
+                        name: "FK_BookUserReading_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookUser_Users_ReaderId",
+                        name: "FK_BookUserReading_Users_ReaderId",
                         column: x => x.ReaderId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BookUserWriting",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookUserWriting", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BookUserWriting_Books_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Books",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BookUserWriting_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,19 +174,25 @@ namespace Librarian.BackEnd.Entity.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_AuthorId",
-                table: "Books",
-                column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookUser_BookId",
-                table: "BookUser",
+                name: "IX_BookUserReading_BookId",
+                table: "BookUserReading",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookUser_ReaderId",
-                table: "BookUser",
+                name: "IX_BookUserReading_ReaderId",
+                table: "BookUserReading",
                 column: "ReaderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookUserWriting_AuthorId",
+                table: "BookUserWriting",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookUserWriting_BookId",
+                table: "BookUserWriting",
+                column: "BookId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_chapterReviews_AuthorId",
@@ -206,20 +218,16 @@ namespace Librarian.BackEnd.Entity.Migrations
                 name: "IX_Reviews_BookId",
                 table: "Reviews",
                 column: "BookId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_AuthorId",
-                table: "Users",
-                column: "AuthorId",
-                unique: true,
-                filter: "[AuthorId] IS NOT NULL");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BookUser");
+                name: "BookUserReading");
+
+            migrationBuilder.DropTable(
+                name: "BookUserWriting");
 
             migrationBuilder.DropTable(
                 name: "chapterReviews");
@@ -235,9 +243,6 @@ namespace Librarian.BackEnd.Entity.Migrations
 
             migrationBuilder.DropTable(
                 name: "Books");
-
-            migrationBuilder.DropTable(
-                name: "Authors");
         }
     }
 }

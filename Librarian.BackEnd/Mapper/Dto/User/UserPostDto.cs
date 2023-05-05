@@ -1,8 +1,9 @@
-﻿namespace Librarian.BackEnd.Mapper.Dto
+﻿namespace Librarian.BackEnd.Mapper.Dto.User
 {
-    public class UserGetDto
+    public class UserPostDto
     {
-        public Guid Id { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }

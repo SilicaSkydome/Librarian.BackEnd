@@ -3,6 +3,7 @@ using Librarian.BackEnd.Entity.Models;
 using Librarian.BackEnd.Mapper.Dto.Book;
 using Librarian.BackEnd.Mapper.Dto.Chapter;
 using Librarian.BackEnd.Mapper.Dto.User;
+using Librarian.BackEnd.Mapper.Dto.UserReading;
 
 namespace Librarian.BackEnd.Mapper.Helper
 {
@@ -13,12 +14,16 @@ namespace Librarian.BackEnd.Mapper.Helper
             CreateMap<Book, BookGetDto>();
             CreateMap<BookGetDto, Book>();
             CreateMap<BookPostDto, Book>();
+
             CreateMap<Chapter, ChapterGetDto>();
             CreateMap<ChapterGetDto, Chapter>();
             CreateMap<ChapterPostDto, Chapter>();
+
             CreateMap<User, UserGetDto>();
             CreateMap<UserPostDto, User>();
-            CreateMap<UserPostDto, User>();
+            CreateMap<UserLoginDto, User>();
+
+            CreateMap<UserReadingPostDto, BookUserReading>();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Librarian.BackEnd.Entity.Models
         public Book Book { get; set; }
         public Guid ReaderId { get; set; }
         public User Reader { get; set; }
+        public string Status { get; set; }
 
     }
 }

@@ -11,6 +11,8 @@ namespace Librarian.BackEnd.Entity.Data
         }
 
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<BookUserReading> BookUserReadings { get; set; } = null!;
+        public DbSet<BookUserWriting> BookUserWritings { get; set; } = null!;
         public DbSet<Book> Books { get; set; } = null!;
         public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<Chapter> Chapters { get; set; } = null!;
@@ -35,6 +37,7 @@ namespace Librarian.BackEnd.Entity.Data
             {
                 b.HasOne(b => b.Author)
                 .WithMany(b => b.Writing)
+                .HasForeignKey(b => b.AuthorId)
                 .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
 
                 b.HasOne(b => b.Book)

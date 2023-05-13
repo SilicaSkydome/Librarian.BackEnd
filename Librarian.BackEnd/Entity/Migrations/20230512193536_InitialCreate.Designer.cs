@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Librarian.BackEnd.Entity.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230505225601_InitialCreate")]
+    [Migration("20230512193536_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -67,13 +67,17 @@ namespace Librarian.BackEnd.Entity.Migrations
                     b.Property<Guid>("ReaderId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
 
                     b.HasIndex("ReaderId");
 
-                    b.ToTable("BookUserReading");
+                    b.ToTable("BookUserReadings");
                 });
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUserWriting", b =>
@@ -95,7 +99,7 @@ namespace Librarian.BackEnd.Entity.Migrations
                     b.HasIndex("BookId")
                         .IsUnique();
 
-                    b.ToTable("BookUserWriting");
+                    b.ToTable("BookUserWritings");
                 });
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.Chapter", b =>

@@ -33,6 +33,9 @@ namespace Librarian.BackEnd.Entity.Data
                 b.HasOne(b => b.Author)
                 .WithOne(b => b.Book)
                 .HasForeignKey<BookUserWriting>(b => b.BookId);
+
+                b.Property(b => b.CoverUrl)
+                .HasDefaultValue("");
             });
             modelBuilder.Entity<BookUserReading>(bu =>
             {

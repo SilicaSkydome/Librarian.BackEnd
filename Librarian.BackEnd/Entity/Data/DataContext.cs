@@ -20,6 +20,14 @@ namespace Librarian.BackEnd.Entity.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(u =>
+            {
+                u.Property(u => u.Name)
+                .HasDefaultValue("username");
+                u.Property(u => u.Role)
+                .HasDefaultValue("user");
+
+            });
             modelBuilder.Entity<Book>(b =>
             {
                 b.HasOne(b => b.Author)

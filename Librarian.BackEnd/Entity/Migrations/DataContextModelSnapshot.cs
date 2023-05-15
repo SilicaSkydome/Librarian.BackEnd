@@ -201,7 +201,6 @@ namespace Librarian.BackEnd.Entity.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Login")
@@ -210,7 +209,9 @@ namespace Librarian.BackEnd.Entity.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("username");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -218,7 +219,9 @@ namespace Librarian.BackEnd.Entity.Migrations
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("user");
 
                     b.HasKey("Id");
 

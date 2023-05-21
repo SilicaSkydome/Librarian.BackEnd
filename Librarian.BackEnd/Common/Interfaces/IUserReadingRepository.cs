@@ -4,6 +4,7 @@ namespace Librarian.BackEnd.Common.Interfaces
 {
     public interface IUserReadingRepository
     {
+        List<Book> GetUserReading(Guid userID, string? status);
         bool AddToReading(BookUserReading UserReading);
         bool ChangeStatus(BookUserReading UserReading);
         bool RemoveFromReading(BookUserReading UserReading);

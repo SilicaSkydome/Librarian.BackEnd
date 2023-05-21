@@ -31,6 +31,11 @@ namespace Librarian.BackEnd.Common.Repository
             return _context.Users.Where(u => u.Id == id).FirstOrDefault();
         }
 
+        public User GetUserByUserLogin(string login)
+        {
+            return _context.Users.Where(u => u.Login == login).FirstOrDefault();
+        }
+
         public ICollection<User> GetUsers()
         {
             return _context.Users.OrderBy(u => u.Name).ToList();
@@ -57,6 +62,11 @@ namespace Librarian.BackEnd.Common.Repository
         public bool UserExists(Guid id)
         {
             return _context.Users.Any(u => u.Id == id);
+        }
+
+        public bool UserExists(string login)
+        {
+            return _context.Users.Any(u => u.Login == login);
         }
     }
 }

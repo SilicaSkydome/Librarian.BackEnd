@@ -47,6 +47,22 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(user);
         }
 
+        [Authorize]
+        [HttpGet("login/{login}")]
+        [ProducesResponseType(200, Type = typeof(User))]
+        public IActionResult GetUserByUserLogin(string login)
+        {
+            if (!_userRepository.UserExists(login))
+                return NotFound();
+
+            var user = _mapper.Map<UserGetDto>(_userRepository.GetUserByUserLogin(login));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(user);
+        }
+
         [HttpGet("name/{name}")]
         [ProducesResponseType(200, Type = typeof(UserGetDto))]
         public IActionResult GetUsersByName(string name)

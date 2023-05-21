@@ -24,6 +24,18 @@ namespace Librarian.BackEnd.Common.Repository
             return Save();
         }
 
+        public List<Book> GetUserReading(Guid userID, string? status)
+        {
+            if (status != null || status != "")
+            {
+                return _context.BookUserReadings.Where(b => b.Reader.Id == userID && b.Status == status).Select(b => b.Book).ToList();
+            }
+            else
+            {
+                return _context.BookUserReadings.Where(b => b.Reader.Id == userID).Select(b => b.Book).ToList();
+            }
+        }
+
         public bool RemoveFromReading(BookUserReading UserReading)
         {
             _context.Remove(UserReading);

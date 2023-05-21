@@ -19,6 +19,7 @@ namespace Librarian.BackEnd.Common.Controllers
 
         [AllowAnonymous]
         [HttpPost]
+        [ProducesResponseType(200, Type = typeof(string))]
         public IActionResult Login([FromBody] UserLoginDto userLogin)
         {
             if (!_loginRepository.UserExists(userLogin))
@@ -29,8 +30,8 @@ namespace Librarian.BackEnd.Common.Controllers
 
             if(user != null)
             {
-                var token = _loginRepository.Generate(user);
-                return Ok(token);
+                string token = _loginRepository.Generate(user);
+                return Ok(new { token = token, });
             }
 
             return NotFound();

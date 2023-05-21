@@ -2,6 +2,7 @@
 using Librarian.BackEnd.Common.Interfaces;
 using Librarian.BackEnd.Common.Repository;
 using Librarian.BackEnd.Entity.Models;
+using Librarian.BackEnd.Mapper.Dto.Book;
 using Librarian.BackEnd.Mapper.Dto.UserReading;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,23 @@ namespace Librarian.BackEnd.Common.Controllers
 
             return Ok("Successfully created");
 
+        }
+
+        [HttpGet("id/{id}/reading")]
+        [ProducesResponseType(200, Type = typeof(List<BookGetDto>))]
+        public IActionResult GetUserReading(Guid id, string? status)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var library = _mapper.Map<List<BookGetDto>>(_userReadingRepository.GetUserReading(id, status));
+
+            if (library != null)
+            {
+                return Ok(library);
+            }
+
+            return NotFound();
         }
 
         [Authorize]

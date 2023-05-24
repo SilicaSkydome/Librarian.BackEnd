@@ -49,13 +49,13 @@ namespace Librarian.BackEnd.Common.Controllers
 
         [Authorize]
         [HttpGet("login/{login}")]
-        [ProducesResponseType(200, Type = typeof(User))]
+        [ProducesResponseType(200, Type = typeof(UserDataDto))]
         public IActionResult GetUserByUserLogin(string login)
         {
             if (!_userRepository.UserExists(login))
                 return NotFound();
 
-            var user = _mapper.Map<UserGetDto>(_userRepository.GetUserByUserLogin(login));
+            var user = _mapper.Map<UserDataDto>(_userRepository.GetUserByUserLogin(login));
 
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -112,7 +112,7 @@ namespace Librarian.BackEnd.Common.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateUser(Guid id, [FromBody] UserPostDto updatedUser)
+        public IActionResult UpdateUser(Guid id, [FromBody] UserDataDto updatedUser)
         {
             if (updatedUser == null)
                 return BadRequest(ModelState);
@@ -131,7 +131,7 @@ namespace Librarian.BackEnd.Common.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Updated successfully");
+            return Ok();
         }
 
         [Authorize]

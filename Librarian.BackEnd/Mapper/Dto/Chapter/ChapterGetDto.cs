@@ -2,10 +2,9 @@
 {
     public class ChapterGetDto
     {
-        public Guid ID { get; set; }
-        public Guid BookID { get; set; }
-        public string ChapterName { get; set; }
+        public Guid Id { get; set; }
+        public Guid BookId { get; set; }
+        public string Name { get; set; }
         public string Text { get; set; }
-        public int Symbols { get; set; }
     }
 }

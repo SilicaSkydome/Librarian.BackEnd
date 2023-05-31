@@ -16,7 +16,6 @@ namespace Librarian.BackEnd.Entity.Data
         public DbSet<Book> Books { get; set; } = null!;
         public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<Chapter> Chapters { get; set; } = null!;
-        public DbSet<ChapterReview> chapterReviews { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -63,18 +62,6 @@ namespace Librarian.BackEnd.Entity.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
                 r.HasOne(r => r.Author)
-                .WithMany()
-                .HasForeignKey(r => r.AuthorId)
-                .OnDelete(DeleteBehavior.Restrict);
-            });
-            modelBuilder.Entity<ChapterReview>(cr =>
-            {
-                cr.HasOne(r => r.Chapter)
-                .WithMany(b => b.Reviews)
-                .HasForeignKey(r => r.ChapterId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                cr.HasOne(r => r.Author)
                 .WithMany()
                 .HasForeignKey(r => r.AuthorId)
                 .OnDelete(DeleteBehavior.Restrict);

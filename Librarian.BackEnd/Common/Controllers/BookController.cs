@@ -2,6 +2,7 @@
 using Librarian.BackEnd.Common.Interfaces;
 using Librarian.BackEnd.Entity.Models;
 using Librarian.BackEnd.Mapper.Dto.Book;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Librarian.BackEnd.Common.Controllers
@@ -73,6 +74,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(books);
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -104,6 +106,8 @@ namespace Librarian.BackEnd.Common.Controllers
 
             return Ok("Successfully created");
         }
+
+        [Authorize]
         [HttpPut("id/{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -130,6 +134,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok("Updated successfully");
         }
 
+        [Authorize]
         [HttpDelete("id/{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

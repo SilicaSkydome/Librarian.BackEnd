@@ -2,6 +2,7 @@
 using Librarian.BackEnd.Common.Interfaces;
 using Librarian.BackEnd.Entity.Models;
 using Librarian.BackEnd.Mapper.Dto.Chapter;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Librarian.BackEnd.Common.Controllers
@@ -27,7 +28,7 @@ namespace Librarian.BackEnd.Common.Controllers
         public IActionResult GetChapters(Guid bookId)
         {
             var chapters = _mapper.Map<List<ChapterGetDto>>(_chapterRepository.GetChapters(bookId));
-            chapters.ForEach(c => c.BookID = bookId);
+            chapters.ForEach(c => c.BookId = bookId);
             if (!ModelState.IsValid)
                 return BadRequest();
 
@@ -49,6 +50,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(chapter);
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -62,16 +64,17 @@ namespace Librarian.BackEnd.Common.Controllers
 
 
             var chapterMap = _mapper.Map<Chapter>(chapterCreate);
-            chapterMap.Book = _bookRepository.GetBookById(chapterCreate.BookID);
+            chapterMap.Book = _bookRepository.GetBookById(chapterCreate.BookId);
             if (!_chapterRepository.CreateChapter(chapterMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving.");
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully created");
+            return Ok();
         }
 
+        [Authorize]
         [HttpPut("id/{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -98,6 +101,7 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok("Updated successfully");
         }
 
+        [Authorize]
         [HttpDelete("id/{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

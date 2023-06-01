@@ -98,7 +98,7 @@ namespace Librarian.BackEnd.Common.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Updated successfully");
+            return Ok();
         }
 
         [Authorize]
@@ -122,7 +122,7 @@ namespace Librarian.BackEnd.Common.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Deleted Successfully");
+            return Ok();
         }
     }
 }

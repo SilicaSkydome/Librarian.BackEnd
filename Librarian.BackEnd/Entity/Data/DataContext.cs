@@ -36,13 +36,6 @@ namespace Librarian.BackEnd.Entity.Data
                 b.Property(b => b.CoverUrl)
                 .HasDefaultValue("");
             });
-            modelBuilder.Entity<BookUserReading>(bu =>
-            {
-                bu.HasOne(b => b.Reader).WithMany(b => b.Reading)
-                .HasForeignKey(b => b.ReaderId).OnDelete(DeleteBehavior.Restrict);
-                bu.HasOne(b => b.Book).WithMany(b => b.Readers)
-                .HasForeignKey(b => b.BookId).OnDelete(DeleteBehavior.Cascade);
-            });
             modelBuilder.Entity<BookUserWriting>(b =>
             {
                 b.HasOne(b => b.Author)

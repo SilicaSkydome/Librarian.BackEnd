@@ -12,7 +12,6 @@
         public string? Description { get; set; }
         public DateTime? BirthDate { get; set; }
         public string? Country { get; set; }
-        public ICollection<BookUserReading>? Reading { get; set; } = null!;
         public ICollection<BookUserWriting>? Writing { get; set; } = null!;
 
     }

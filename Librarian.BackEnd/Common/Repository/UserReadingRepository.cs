@@ -24,15 +24,20 @@ namespace Librarian.BackEnd.Common.Repository
             return Save();
         }
 
-        public List<Book> GetUserReading(Guid userID, string? status)
+        public List<Book> GetUserReading(Guid userId, string? status)
         {
             if (status != null || status != "")
             {
-                return _context.BookUserReadings.Where(b => b.Reader.Id == userID && b.Status == status).Select(b => b.Book).ToList();
+
+                List<Guid> bookIdList = _context.BookUserReadings.Where(b => b.ReaderId == userId && b.Status == status).Select(b => b.BookId).ToList();
+                List<Book> books = _context.Books.Where(b => bookIdList.Contains(b.Id)).ToList();
+                return books;
             }
             else
             {
-                return _context.BookUserReadings.Where(b => b.Reader.Id == userID).Select(b => b.Book).ToList();
+                List<Guid> bookIdList = _context.BookUserReadings.Where(b => b.ReaderId == userId).Select(b => b.BookId).ToList();
+                List<Book> books = _context.Books.Where(b => bookIdList.Contains(b.Id)) .ToList();
+                return books;
             }
         }
 

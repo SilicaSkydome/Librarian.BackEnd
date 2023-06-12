@@ -17,9 +17,13 @@ namespace Librarian.BackEnd.Entity.Models
         [Required]
         public int Symbols { get; set; }
         public string? Description { get; set; }
-        public ICollection<BookUserReading> Readers { get; set; } = null!;
         [NotMapped]
-        public ICollection<string> Tags { get; set; } = null!;
+        public ICollection<string> Tags
+        {
+            get { return TagsAsString?.Split(',', StringSplitOptions.RemoveEmptyEntries); }
+            set { TagsAsString = string.Join(",", value); }
+        }
+        public string TagsAsString { get; set; }
         public ICollection<Chapter> Chapters { get; set; } = null!;
         public ICollection<Review> Reviews { get; set; } = null!;
     }

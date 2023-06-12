@@ -4,6 +4,7 @@ using Librarian.BackEnd.Entity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Librarian.BackEnd.Entity.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230604195212_ChangedReadingTable")]
+    partial class ChangedReadingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,10 +52,6 @@ namespace Librarian.BackEnd.Entity.Migrations
                     b.Property<int>("Symbols")
                         .HasColumnType("int");
 
-                    b.Property<string>("TagsAsString")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Books");
@@ -74,7 +73,14 @@ namespace Librarian.BackEnd.Entity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BookUserReadings");
                 });
@@ -199,6 +205,19 @@ namespace Librarian.BackEnd.Entity.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUserReading", b =>
+                {
+                    b.HasOne("Librarian.BackEnd.Entity.Models.Book", null)
+                        .WithMany("Readers")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Librarian.BackEnd.Entity.Models.User", null)
+                        .WithMany("Reading")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.BookUserWriting", b =>
                 {
                     b.HasOne("Librarian.BackEnd.Entity.Models.User", "Author")
@@ -255,11 +274,15 @@ namespace Librarian.BackEnd.Entity.Migrations
 
                     b.Navigation("Chapters");
 
+                    b.Navigation("Readers");
+
                     b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Librarian.BackEnd.Entity.Models.User", b =>
                 {
+                    b.Navigation("Reading");
+
                     b.Navigation("Writing");
                 });
 #pragma warning restore 612, 618

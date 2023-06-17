@@ -4,6 +4,7 @@ using Librarian.BackEnd.Entity.Models;
 using Librarian.BackEnd.Mapper.Dto.Book;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Librarian.BackEnd.Common.Controllers
 {
@@ -24,7 +25,7 @@ namespace Librarian.BackEnd.Common.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<BookGetDto>))]
         public IActionResult GetBooks(string? order)
         {
-            var books = _mapper.Map<List<BookGetDto>>(_bookRepository.GetBooks(order));
+            var books = _mapper.Map<List<BookGetDto>>(_bookRepository.Get10Books(order));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -48,17 +49,59 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(book);
         }
 
-        [HttpGet("name/{name}")]
+        [HttpGet("search")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<BookGetDto>))]
         [ProducesResponseType(400)]
-        public IActionResult GetBooksByName(string name)
+        public IActionResult SearchBooks(int page, string name, [FromQuery] string? tags)
         {
-            var books = _mapper.Map<List<BookGetDto>>(_bookRepository.GetBooksByName(name));
+            string[] tagsArray;
+            if (!tags.IsNullOrEmpty())
+            {
+                tagsArray = tags.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            }
+            else
+            {
+                tagsArray = new string[] { };
+            }
+
+            List<BookGetDto> result;
+
+            if (!tagsArray.IsNullOrEmpty())
+            {
+                result = _mapper.Map<List<BookGetDto>>(_bookRepository.SearchBooks(page, name, tagsArray));
+            }
+            else
+            {
+                result = _mapper.Map<List<BookGetDto>>(_bookRepository.SearchBooks(page, name, null));
+            }
 
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            return Ok(books);
+            return Ok(result);
+        }
+
+        [HttpGet("searchCount")]
+        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400)]
+        public IActionResult SearchCount(string? name, [FromQuery] string? tags)
+        {
+            string[] tagsArray;
+            if (!tags.IsNullOrEmpty())
+            {
+                tagsArray = tags.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            }
+            else
+            {
+                tagsArray = new string[] { };
+            }
+
+            int booksCount = _bookRepository.SearchCount(name, tagsArray);
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(booksCount);
         }
 
         [HttpGet("author/{author}")]
@@ -83,7 +126,7 @@ namespace Librarian.BackEnd.Common.Controllers
             if (bookCreate == null)
                 return BadRequest(ModelState);
 
-            var book = _bookRepository.GetBooks(null)
+            var book = _bookRepository.Get10Books(null)
                 .Where(b => b.Name.Trim().ToUpper() == bookCreate.Name.Trim().ToUpper())
                 .FirstOrDefault();
 

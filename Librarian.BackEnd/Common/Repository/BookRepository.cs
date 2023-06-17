@@ -1,6 +1,7 @@
 ﻿using Librarian.BackEnd.Common.Interfaces;
 using Librarian.BackEnd.Entity.Data;
 using Librarian.BackEnd.Entity.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Librarian.BackEnd.Common.Repository
 {
@@ -28,16 +29,11 @@ namespace Librarian.BackEnd.Common.Repository
             return _context.Books.Where(b => b.Id == id).FirstOrDefault();
         }
 
-        public ICollection<Book> GetBooksByName(string name)
-        {
-            return _context.Books.Where(b => b.Name.Contains(name)).ToList();
-        }
-
-        public ICollection<Book> GetBooks(string? order)
+        public ICollection<Book> Get10Books(string? order)
         {
             if (order == "popular")
             {
-                return _context.Books.OrderBy(b => b.Name).ToList();
+                return _context.Books.OrderBy(b => b.Name).Take(10).ToList();
             }
             if (order == "new")
             {
@@ -45,16 +41,95 @@ namespace Librarian.BackEnd.Common.Repository
             }
             if (order == "updates")
             {
-                return _context.Books.OrderBy(b => b.Name).ToList();
+                return _context.Books.OrderBy(b => b.Name).Take(10).ToList();
             }
             if (order == "bestsellers")
             {
-                return _context.Books.OrderBy(b => b.Name).ToList();
+                return _context.Books.OrderBy(b => b.Name).Take(10).ToList();
             }
 
-            return _context.Books.OrderBy(b => b.Name).ToList();
+            return _context.Books.OrderBy(b => b.Name).Take(10).ToList();
         }
-
+        public ICollection<Book> SearchBooks(int page, string name, string[]? tags)
+        {
+            if(page == 1)
+            {
+                if (tags.IsNullOrEmpty())
+                {
+                    if (name == "null")
+                    {
+                        return _context.Books.OrderBy(b => b.Name).Take(10).ToList();
+                    }
+                    else
+                    {
+                        return _context.Books.Where(b => b.Name.Contains(name)).Take(10).ToList();
+                    }
+                }
+                else
+                {
+                    if (name == "null")
+                    {
+                        return _context.Books.AsEnumerable().Where(b => tags.All(t => b.Tags.Contains(t))).Take(10).ToList();
+                    }
+                    else
+                    {
+                        return _context.Books.AsEnumerable().Where(b => b.Name.Contains(name) && tags.All(t => b.Tags.Contains(t))).Take(10).ToList();
+                    }
+                }
+            }
+            else
+            {
+                if (tags.IsNullOrEmpty())
+                {
+                    if (name == "null")
+                    {
+                        return _context.Books.OrderBy(b => b.Name).Skip((10 * page) - 10).Take(10).ToList();
+                    }
+                    else
+                    {
+                        return _context.Books.Where(b => b.Name.Contains(name)).Skip((10 * page) - 10).Take(10).ToList();
+                    }
+                    
+                }
+                else
+                {
+                    if (name == "null")
+                    {
+                        return _context.Books.AsEnumerable().Where(b => tags.All(t => b.Tags.Contains(t))).Skip((10 * page) - 10).Take(10).ToList();
+                    }
+                    else
+                    {
+                        return _context.Books.AsEnumerable().Where(b => b.Name.Contains(name) && tags.All(t => b.Tags.Contains(t))).Skip((10 * page) - 10).Take(10).ToList();
+                    }
+                }
+            }
+        }
+        public int SearchCount(string name, string[]? tags)
+        {
+            if (tags.IsNullOrEmpty())
+            {
+                if(name == "null")
+                {
+                    return _context.Books.OrderBy(b => b.Name).Count();
+                }
+                else
+                {
+                    return _context.Books.Where(b => b.Name.Contains(name)).Count();
+                }
+            }
+            else
+            {
+                if (name == "null")
+                {
+                    return _context.Books.Where(b => tags.All(t => b.Tags.Contains(t))).Count();
+                }
+                else
+                {
+                    return _context.Books.Where(b => b.Name.Contains(name) && tags.All(t => b.Tags.Contains(t))).Count();
+                }
+                
+            }
+        }
         public bool CreateBook(Book book)
         {
             _context.Add(book);
@@ -80,5 +155,6 @@ namespace Librarian.BackEnd.Common.Repository
 
             return Save();
         }
+
     }
 }

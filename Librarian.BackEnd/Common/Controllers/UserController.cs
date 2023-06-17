@@ -155,7 +155,7 @@ namespace Librarian.BackEnd.Common.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Deleted Successfully");
+            return Ok();
         }
     }
 }

@@ -49,6 +49,19 @@ namespace Librarian.BackEnd.Common.Controllers
             return Ok(book);
         }
 
+        [HttpGet("misc")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<BookGetDto>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetMisc()
+        {
+            var books = _mapper.Map<List<BookGetDto>>(_bookRepository.GetMisc());
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(books);
+        }
+
         [HttpGet("search")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<BookGetDto>))]
         [ProducesResponseType(400)]
@@ -96,7 +109,15 @@ namespace Librarian.BackEnd.Common.Controllers
                 tagsArray = new string[] { };
             }
 
-            int booksCount = _bookRepository.SearchCount(name, tagsArray);
+            int booksCount = 0;
+            if (!tagsArray.IsNullOrEmpty())
+            {
+                _bookRepository.SearchCount(name, tagsArray);
+            }
+            else
+            {
+                _bookRepository.SearchCount(name, null);
+            }
 
             if (!ModelState.IsValid)
                 return BadRequest();

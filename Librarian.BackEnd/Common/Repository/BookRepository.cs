@@ -28,7 +28,10 @@ namespace Librarian.BackEnd.Common.Repository
         {
             return _context.Books.Where(b => b.Id == id).FirstOrDefault();
         }
-
+        public ICollection<Book> GetMisc()
+        {
+            return _context.Books.OrderBy(b => Guid.NewGuid()).Take(4).ToList();
+        }
         public ICollection<Book> Get10Books(string? order)
         {
             if (order == "popular")
@@ -121,11 +124,11 @@ namespace Librarian.BackEnd.Common.Repository
             {
                 if (name == "null")
                 {
-                    return _context.Books.Where(b => tags.All(t => b.Tags.Contains(t))).Count();
+                    return _context.Books.AsEnumerable().Where(b => tags.All(t => b.Tags.Contains(t))).Count();
                 }
                 else
                 {
-                    return _context.Books.Where(b => b.Name.Contains(name) && tags.All(t => b.Tags.Contains(t))).Count();
+                    return _context.Books.AsEnumerable().Where(b => b.Name.Contains(name) && tags.All(t => b.Tags.Contains(t))).Count();
                 }
                 
             }

@@ -9,6 +9,7 @@ namespace Librarian.BackEnd.Common.Interfaces
         ICollection<Book> Get10Books(string? order);
         ICollection<Book> GetBooksByAuthor(string author);
         ICollection<Book> SearchBooks(int page, string name, string[]? tags);
+        ICollection<Book> GetMisc();
         int SearchCount(string name, string[]? tags);
         bool CreateBook(Book book);
         bool UpdateBook(Book book);

@@ -2,6 +2,7 @@
 using Librarian.BackEnd.Entity.Models;
 using Librarian.BackEnd.Mapper.Dto.Book;
 using Librarian.BackEnd.Mapper.Dto.Chapter;
+using Librarian.BackEnd.Mapper.Dto.Review;
 using Librarian.BackEnd.Mapper.Dto.User;
 using Librarian.BackEnd.Mapper.Dto.UserReading;
 
@@ -24,6 +25,9 @@ namespace Librarian.BackEnd.Mapper.Helper
             CreateMap<UserLoginDto, User>();
             CreateMap<UserDataDto, User>();
             CreateMap<User, UserDataDto>();
+
+            CreateMap<Review, ReviewGetDto>();
+            CreateMap<ReviewPostDto, Review>();
 
             CreateMap<UserReadingPostDto, BookUserReading>();
         }

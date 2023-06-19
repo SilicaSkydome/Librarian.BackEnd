@@ -13,6 +13,7 @@
         public DateTime? BirthDate { get; set; }
         public string? Country { get; set; }
         public ICollection<BookUserWriting>? Writing { get; set; } = null!;
+        public ICollection<Review>? Reviews { get; set; } = null;
 
     }
 }

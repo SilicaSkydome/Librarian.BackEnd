@@ -112,11 +112,11 @@ namespace Librarian.BackEnd.Common.Controllers
             int booksCount = 0;
             if (!tagsArray.IsNullOrEmpty())
             {
-                _bookRepository.SearchCount(name, tagsArray);
+                booksCount = _bookRepository.SearchCount(name, tagsArray);
             }
             else
             {
-                _bookRepository.SearchCount(name, null);
+                booksCount = _bookRepository.SearchCount(name, null);
             }
 
             if (!ModelState.IsValid)

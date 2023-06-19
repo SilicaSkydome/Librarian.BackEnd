@@ -26,7 +26,7 @@ namespace Librarian.BackEnd.Common.Repository
 
         public List<Book> GetUserReading(Guid userId, string? status)
         {
-            if (status != null || status != "")
+            if (status != "null")
             {
 
                 List<Guid> bookIdList = _context.BookUserReadings.Where(b => b.ReaderId == userId && b.Status == status).Select(b => b.BookId).ToList();
@@ -36,7 +36,7 @@ namespace Librarian.BackEnd.Common.Repository
             else
             {
                 List<Guid> bookIdList = _context.BookUserReadings.Where(b => b.ReaderId == userId).Select(b => b.BookId).ToList();
-                List<Book> books = _context.Books.Where(b => bookIdList.Contains(b.Id)) .ToList();
+                List<Book> books = _context.Books.Where(b => bookIdList.Contains(b.Id)).ToList();
                 return books;
             }
         }

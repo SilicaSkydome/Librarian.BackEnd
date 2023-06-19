@@ -30,7 +30,7 @@ namespace Librarian.BackEnd.Common.Repository
         }
         public ICollection<Book> GetMisc()
         {
-            return _context.Books.OrderBy(b => Guid.NewGuid()).Take(4).ToList();
+            return _context.Books.OrderBy(b => Guid.NewGuid()).Take(5).ToList();
         }
         public ICollection<Book> Get10Books(string? order)
         {

@@ -6,6 +6,7 @@ using Librarian.BackEnd.Mapper.Dto.Book;
 using Librarian.BackEnd.Mapper.Dto.UserReading;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Librarian.BackEnd.Common.Controllers
 {
@@ -60,6 +61,9 @@ namespace Librarian.BackEnd.Common.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest();
+
+            if (status.IsNullOrEmpty())
+                status = "null";
 
             var library = _mapper.Map<List<BookGetDto>>(_userReadingRepository.GetUserReading(id, status));
 
